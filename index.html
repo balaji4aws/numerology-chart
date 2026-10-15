@@ -1,6 +1,8 @@
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Numerology Chart</title>
 <style>
 .btn {
@@ -40,7 +42,8 @@
     color: #666; 
     outline: none; 
     height:50px; 
-    width: 375px; color: #000000; font-family: "Georgia"; 
+    width: 375px; max-width: 100%; box-sizing: border-box;
+	color: #000000; font-family: "Georgia"; 
 	font-size: 30px; font-weight: normal;
 }
 .box_style:focus {
@@ -60,9 +63,16 @@
 .body_style {
 	color: #000000; font-family: "Georgia"; 
 	font-size: 20px; font-weight: normal;
-	margin: auto;
-	margin-top: 20px;
-    margin-left: 400px; }
+	max-width: 640px;
+	margin: 20px auto;
+	padding: 0 16px;
+}
+
+@media (max-width: 480px) {
+	.text_style { font-size: 34px; }
+	.btn { font-size: 20px; padding: 10px 16px; }
+	.box_style { font-size: 24px; }
+	.output_style { font-size: 32px; }
 }
 
 
@@ -182,7 +192,7 @@ document.getElementById('outputDiv1').innerHTML = sum;
 </head>
 <body class="body_style"> 
   <table class="hovertable"> 
-    <tr onmouseover="this.style.backgroundColor='#ffff66';" onmouseout="this.style.backgroundColor='#E37B7B';" style="font-size: 25px" "font-weight: 20pt">
+    <tr onmouseover="this.style.backgroundColor='#ffff66';" onmouseout="this.style.backgroundColor='#c3dde0';" style="font-size: 25px; font-weight: bold;">
     <td> 1</td>
     <td> 2</td>
     <td> 3</td>
@@ -191,7 +201,7 @@ document.getElementById('outputDiv1').innerHTML = sum;
     <td> 6</td>
     <td> 7</td>
     <td> 8</td>
-    </b></tr>
+    </tr>
 
     <tr onmouseover="this.style.backgroundColor='#ffff66';" onmouseout="this.style.backgroundColor='#d4e3e5';">
     <td> A</td>
