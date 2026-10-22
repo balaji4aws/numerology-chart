@@ -1,16 +1,23 @@
 # Numerology Chart
 
-A tiny web page that works out the numerology value of a name using the Chaldean
-letter chart. Type a name, press Enter, and it shows the total.
+Type a name, get its numerology number. That is the whole tool.
 
-**Live site:** https://balaji4aws.github.io/numerology-chart/
+**Open it here: https://balaji4aws.github.io/numerology-chart/**
 
-Works on phones and desktop. No app to install.
+Works on a phone or a computer. Nothing to install, and nothing you type leaves
+your device.
 
-## How it works
+## How to use it
 
-Every letter maps to a number between 1 and 8. The page adds up the letters of
-whatever you type and shows the sum, along with the name you entered.
+1. Open the page.
+2. Type a name in the box.
+3. Press Enter or tap **Calculate**.
+
+The page shows the name you typed and its total.
+
+## How the number is worked out
+
+Every letter is worth a number from 1 to 8. Add up the letters of the name.
 
 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
 |---|---|---|---|---|---|---|---|
@@ -20,32 +27,27 @@ whatever you type and shows the sum, along with the name you entered.
 | Q |   | S |   | X |   |   |   |
 | Y |   |   |   |   |   |   |   |
 
-This is the Chaldean mapping, which has no 9 — the number 9 is treated as sacred
-and left out of the letter values. The same chart is drawn at the top of the page
-so you can check a letter by eye.
-
 Example: `RAM` = R(2) + A(1) + M(4) = **7**
 
-Letters are case-insensitive. Anything that is not A–Z — spaces, digits,
-punctuation — adds nothing to the total, so first and last names can be typed
-together or separately.
+A few things worth knowing:
 
-## Running it locally
+- There is no 9. This is the Chaldean chart, which leaves 9 out.
+- Capitals do not matter, so `ram` and `RAM` both give 7.
+- Spaces, numbers and punctuation add nothing, so you can type a full name in
+  one go.
+- The same chart is printed at the top of the page, so you can check a letter
+  by eye.
 
-No build step and no dependencies. Open `index.html` in any browser, or serve the
-folder:
+## For developers
+
+Everything lives in `index.html` — markup, styles and the calculation in plain
+JavaScript. No build step, no dependencies. Open the file in a browser, or serve
+the folder:
 
 ```bash
 python3 -m http.server 8000 --bind 127.0.0.1
 # then visit http://127.0.0.1:8000
 ```
 
-## Files
-
-- `index.html` — the whole thing: markup, styles, and the calculation in plain
-  JavaScript. Everything runs in the browser; nothing is sent anywhere.
-
-## Hosting
-
-The live site is published with GitHub Pages from the `main` branch. Pushing to
-`main` redeploys it within a minute or so.
+The live site is published with GitHub Pages from the root of the `main` branch,
+so pushing to `main` redeploys it within a minute or so.
