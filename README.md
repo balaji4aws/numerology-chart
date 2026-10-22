@@ -17,8 +17,9 @@ your device.
 The page shows the name you typed and its total, and adds it to a list of the
 names you have checked, so you can compare a few side by side.
 
-Tap **Clear** to empty that list and start over. Refreshing the page empties it
-too. Nothing is saved anywhere, so once the list is gone it is gone.
+Each row has a ✕ button if you only want to drop that one name. Tap **Clear**
+to empty that list and start over. Refreshing the page empties it too. Nothing
+is saved anywhere, so once the list is gone it is gone.
 
 ## How the number is worked out
 
