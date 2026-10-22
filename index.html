@@ -33,9 +33,9 @@
   th,
   td {
     border: 1px solid #999;
-    padding: 6px 10px;
+    padding: 6px 8px;
     text-align: center;
-    min-width: 24px;
+    min-width: 20px;
   }
 
   th {
@@ -45,6 +45,13 @@
 
   tbody tr:hover {
     background: #fffbd1;
+  }
+
+  caption {
+    font-size: 16px;
+    color: #555;
+    text-align: left;
+    padding-bottom: 6px;
   }
 
   label {
@@ -71,7 +78,7 @@
     font-family: inherit;
     font-size: 20px;
     padding: 10px 20px;
-    margin-top: 12px;
+    margin: 12px 8px 0 0;
     color: #fff;
     background: #0a558c;
     border: none;
@@ -81,6 +88,16 @@
 
   button:hover {
     background: #08426e;
+  }
+
+  .quiet {
+    color: #222;
+    background: #f1f1f1;
+    border: 1px solid #999;
+  }
+
+  .quiet:hover {
+    background: #e0e0e0;
   }
 
   .result {
@@ -100,6 +117,46 @@
 
   #resultTotal {
     font-size: 34px;
+  }
+
+  /* Input on the left, history on the right. Stacked by default so phones
+     get one column, side by side once there is room. */
+  .columns {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .column {
+    min-width: 0;
+  }
+
+  #historyTable {
+    width: 100%;
+  }
+
+  #historyTable td {
+    text-align: left;
+    word-break: break-word;
+  }
+
+  #historyEmpty {
+    color: #555;
+  }
+
+  @media (min-width: 640px) {
+    .columns {
+      flex-direction: row;
+    }
+
+    .column {
+      flex: 1;
+    }
+
+    th,
+    td {
+      padding: 6px 10px;
+    }
   }
 </style>
 </head>
@@ -131,13 +188,32 @@ is worth the number at the top of its column.</p>
   </tbody>
 </table>
 
-<label for="nameInput">Enter a name</label>
-<input type="text" id="nameInput" autocomplete="off">
-<button type="button" id="calculateButton">Calculate</button>
+<div class="columns">
+  <div class="column">
+    <label for="nameInput">Enter a name</label>
+    <input type="text" id="nameInput" autocomplete="off">
+    <button type="button" id="calculateButton">Calculate</button>
+    <button type="button" id="clearButton" class="quiet">Clear</button>
 
-<div class="result" role="status" aria-live="polite">
-  <p><span class="result-label">Name</span><span id="resultName"></span></p>
-  <p><span class="result-label">Total</span><span id="resultTotal"></span></p>
+    <div class="result" id="result" role="status" aria-live="polite" hidden>
+      <p><span class="result-label">Name</span><span id="resultName"></span></p>
+      <p><span class="result-label">Total</span><span id="resultTotal"></span></p>
+    </div>
+  </div>
+
+  <div class="column">
+    <table id="historyTable" hidden>
+      <caption>Names you have checked</caption>
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Total</th>
+        </tr>
+      </thead>
+      <tbody id="historyBody"></tbody>
+    </table>
+    <p id="historyEmpty">No names yet.</p>
+  </div>
 </div>
 
 <script>
@@ -169,15 +245,52 @@ is worth the number at the top of its column.</p>
   }
 
   var nameInput = document.getElementById('nameInput');
+  var result = document.getElementById('result');
   var resultName = document.getElementById('resultName');
   var resultTotal = document.getElementById('resultTotal');
+  var historyTable = document.getElementById('historyTable');
+  var historyBody = document.getElementById('historyBody');
+  var historyEmpty = document.getElementById('historyEmpty');
+
+  // The history is only these rows, so a refresh loses it. Nothing is saved.
+  function addHistoryRow(name, total) {
+    var row = document.createElement('tr');
+    var nameCell = document.createElement('td');
+    var totalCell = document.createElement('td');
+    nameCell.textContent = name;
+    totalCell.textContent = total;
+    row.appendChild(nameCell);
+    row.appendChild(totalCell);
+    historyBody.appendChild(row);
+    historyEmpty.hidden = true;
+    historyTable.hidden = false;
+  }
 
   function showTotal() {
-    resultName.textContent = nameInput.value;
-    resultTotal.textContent = nameTotal(nameInput.value);
+    var name = nameInput.value;
+    if (name.trim() === '') {
+      return;
+    }
+    var total = nameTotal(name);
+    result.hidden = false;
+    resultName.textContent = name;
+    resultTotal.textContent = total;
+    addHistoryRow(name, total);
+  }
+
+  function clearAll() {
+    nameInput.value = '';
+    resultName.textContent = '';
+    resultTotal.textContent = '';
+    result.hidden = true;
+    historyBody.textContent = '';
+    historyTable.hidden = true;
+    historyEmpty.hidden = false;
+    nameInput.focus();
   }
 
   document.getElementById('calculateButton').addEventListener('click', showTotal);
+  document.getElementById('clearButton').addEventListener('click', clearAll);
 
   nameInput.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
