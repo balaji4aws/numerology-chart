@@ -12,8 +12,13 @@ your device.
 1. Open the page.
 2. Type a name in the box.
 3. Press Enter or tap **Calculate**.
+4. Type another name and do it again.
 
-The page shows the name you typed and its total.
+The page shows the name you typed and its total, and adds it to a list of the
+names you have checked, so you can compare a few side by side.
+
+Tap **Clear** to empty that list and start over. Refreshing the page empties it
+too. Nothing is saved anywhere, so once the list is gone it is gone.
 
 ## How the number is worked out
 
