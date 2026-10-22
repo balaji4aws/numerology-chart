@@ -100,6 +100,12 @@
     background: #e0e0e0;
   }
 
+  .remove {
+    font-size: 16px;
+    padding: 2px 8px;
+    margin: 0;
+  }
+
   .result {
     margin-top: 28px;
   }
@@ -208,6 +214,7 @@ is worth the number at the top of its column.</p>
         <tr>
           <th scope="col">Name</th>
           <th scope="col">Total</th>
+          <th scope="col" aria-label="Remove"></th>
         </tr>
       </thead>
       <tbody id="historyBody"></tbody>
@@ -252,15 +259,40 @@ is worth the number at the top of its column.</p>
   var historyBody = document.getElementById('historyBody');
   var historyEmpty = document.getElementById('historyEmpty');
 
+  // The same empty state Clear leaves behind. It does not touch the input or
+  // the result block, so removing a row leaves both alone.
+  function showEmptyHistory() {
+    historyTable.hidden = true;
+    historyEmpty.hidden = false;
+  }
+
+  function removeHistoryRow(row) {
+    historyBody.removeChild(row);
+    if (historyBody.children.length === 0) {
+      showEmptyHistory();
+    }
+  }
+
   // The history is only these rows, so a refresh loses it. Nothing is saved.
   function addHistoryRow(name, total) {
     var row = document.createElement('tr');
     var nameCell = document.createElement('td');
     var totalCell = document.createElement('td');
+    var removeCell = document.createElement('td');
+    var removeButton = document.createElement('button');
     nameCell.textContent = name;
     totalCell.textContent = total;
+    removeButton.setAttribute('type', 'button');
+    removeButton.setAttribute('class', 'quiet remove');
+    removeButton.setAttribute('aria-label', 'Remove ' + name);
+    removeButton.textContent = '✕';
+    removeButton.addEventListener('click', function () {
+      removeHistoryRow(row);
+    });
+    removeCell.appendChild(removeButton);
     row.appendChild(nameCell);
     row.appendChild(totalCell);
+    row.appendChild(removeCell);
     historyBody.appendChild(row);
     historyEmpty.hidden = true;
     historyTable.hidden = false;
@@ -284,16 +316,17 @@ is worth the number at the top of its column.</p>
     resultTotal.textContent = '';
     result.hidden = true;
     historyBody.textContent = '';
-    historyTable.hidden = true;
-    historyEmpty.hidden = false;
+    showEmptyHistory();
     nameInput.focus();
   }
 
   document.getElementById('calculateButton').addEventListener('click', showTotal);
   document.getElementById('clearButton').addEventListener('click', clearAll);
 
+  // event.repeat is true while a key is held down, so a long press no longer
+  // adds the same name over and over. A fresh press still adds a row.
   nameInput.addEventListener('keydown', function (event) {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && !event.repeat) {
       showTotal();
     }
   });
