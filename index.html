@@ -150,13 +150,36 @@
     color: #555;
   }
 
-  @media (min-width: 640px) {
+  /* The list scrolls inside this box, so a long list does not keep
+     stretching the page and push the input off the top. */
+  .history-scroll {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  /* Keep the Name/Total headers in view while the list is scrolled. The
+     box-shadow redraws the line the collapsed border loses when stuck. */
+  #historyTable thead th {
+    position: sticky;
+    top: 0;
+    box-shadow: 0 1px 0 #999;
+  }
+
+  @media (min-width: 760px) {
+    body {
+      max-width: 1040px;
+    }
+
     .columns {
       flex-direction: row;
     }
 
     .column {
       flex: 1;
+    }
+
+    .history-scroll {
+      max-height: 420px;
     }
 
     th,
@@ -208,17 +231,19 @@ is worth the number at the top of its column.</p>
   </div>
 
   <div class="column">
-    <table id="historyTable" hidden>
-      <caption>Names you have checked</caption>
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Total</th>
-          <th scope="col" aria-label="Remove"></th>
-        </tr>
-      </thead>
-      <tbody id="historyBody"></tbody>
-    </table>
+    <div class="history-scroll">
+      <table id="historyTable" hidden>
+        <caption>Names you have checked</caption>
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Total</th>
+            <th scope="col" aria-label="Remove"></th>
+          </tr>
+        </thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+    </div>
     <p id="historyEmpty">No names yet.</p>
   </div>
 </div>
